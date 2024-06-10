@@ -7,19 +7,19 @@ import Card from "@/components/Card";
 import useDebounce from "@/hooks/debounce";
 
 export default function Trending() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    const [searchLaporan, setSearchLaporan] = useState('');
+    const debouncedSearchLaporan = useDebounce(searchLaporan, 500);
     const [filteredData, setFilteredData] = useState([]);
 
     useEffect(() => {
         const filtered = initialData
-            .filter(item => item.namaBarang.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
+            .filter(item => item.namaBarang.toLowerCase().includes(debouncedSearchLaporan.toLowerCase()))
             .sort((recent, last) => last.vote - recent.vote);
         setFilteredData(filtered);
-    }, [debouncedSearchTerm]);
+    }, [debouncedSearchLaporan]);
 
     const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
+        setSearchLaporan(event.target.value);
     };
 
     return (
@@ -42,7 +42,7 @@ export default function Trending() {
                                         type="text" 
                                         id="search" 
                                         placeholder="Search" 
-                                        value={searchTerm} 
+                                        value={searchLaporan} 
                                         onChange={handleSearchChange} 
                                     />
                                 </div>

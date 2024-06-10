@@ -14,13 +14,13 @@ export default function Main() {
   const [dataLaporan, setDataLaporan] = useState(initialData); // ini bisa dihapus nanti ketika data sudah ada dari API
   const [selectedType, setSelectedType] = useState("kehilangan");
   const [filteredDataLaporan, setFilteredDataLaporan] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const [searchLaporan, setSearchLaporan] = useState('');
+  const debouncedSearchLaporan = useDebounce(searchLaporan, 500);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch data dari API nanti di sini
+        // Fetch data mgkn nang kene ae dit, misal wis ana API
         // const response = await fetch('Link API');
         // if (!response.ok) {
         //     throw new Error('cannot fetch data from API');
@@ -38,22 +38,22 @@ export default function Main() {
     };
 
     fetchData();
-  }, [dataLaporan, selectedType]); // nanti dataLaporan ini dihapus ketika get data sudah dari API
+  }, [dataLaporan, selectedType]); // mgko misal wis implementasi API, dataLaporan dihapus ae
 
   useEffect(() => {
     const dataDebouce = dataLaporan
-      .filter(item => item.type === selectedType && item.namaBarang.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
+      .filter(item => item.type === selectedType && item.namaBarang.toLowerCase().includes(debouncedSearchLaporan.toLowerCase()))
       .sort((recent, last) => new Date(last.createdAt) - new Date(recent.createdAt));
 
     setFilteredDataLaporan(dataDebouce);
-  }, [debouncedSearchTerm, selectedType, dataLaporan]);
+  }, [debouncedSearchLaporan, selectedType, dataLaporan]);
 
   const handleTypeChange = (type) => {
     setSelectedType(type);
   };
 
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+    setSearchLaporan(event.target.value);
   };
 
   return (
@@ -63,7 +63,7 @@ export default function Main() {
         <section id="hero" className={`${styles.backgroundRadial} w-full h-screen flex justify-center items-center`}>
           <div className="w-full flex flex-col gap-[20px] md:gap-[60px] justify-center items-center">
             <h1 className="text-center text-2xl sm:text-4xl md:text-6xl mx-[20px] sm:mx-[20px] lg:mx-[200px] xl:mx-[290px] leading-[30px] sm:leading-[40px] md:leading-[80px]">Revolutionize Your Inventory with Smart <span className="text-[#00408A]">SIP Reporting</span></h1>
-            {/* Di sini handle login, misal belum login / session / token tidak ada, harus login dulu */}
+            {/* nang kene handle login, misal drng login / session / token laka, kudu login sek */}
             <Link href="/dashboard">
               <Button className="w-[150px] md:w-[200px] h-[40px] md:h-[60px] font-normal rounded-[32px] bg-[#00408A] text-center text-sm md:text-xl text-white">
                 Report Now
@@ -101,7 +101,7 @@ export default function Main() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                       </svg>
                     </div>
-                    <Search className="peer h-full w-full outline-none text-sm text-gray-700 pr-2" type="text" id="search" placeholder="Search" value={searchTerm} onChange={handleSearchChange} />
+                    <Search className="peer h-full w-full outline-none text-sm text-gray-700 pr-2" type="text" id="search" placeholder="Search" value={searchLaporan} onChange={handleSearchChange} />
                   </div>
                 </div>
               </div>

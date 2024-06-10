@@ -142,6 +142,7 @@ const Navbar = () => {
                                 >
                                     Laporan
                                 </li>
+                                {/* Kie gawe kondisi juga, misal wis login, ganti profile e */}
                                 <Link href="/login">
                                     <Button className="font-normal h-10 px-6 rounded-[6px] bg-[#00408A] text-white">
                                         Log In

@@ -5,7 +5,7 @@ import styles from "@/app/home/home.module.css";
 
 const Card = ({ item }) => {
     return (
-        <Link className="w-full md:max-w-[345px] lg:max-w-[415px] h-[400px] md:h-[257px] lg:h-[296px]" href={`/trending/detail?id=${item.id}`}>
+        <Link className="w-full md:max-w-[345px] lg:max-w-[415px] h-[400px] md:h-[257px] lg:h-[296px]" href={`/laporan/detail?id=${item.id}`}>
             <div className="w-full h-full flex flex-col gap-2 p-3 border-2 rounded-[10px] cursor-pointer bg-white">
                 <div className="w-full h-auto flex justify-between items-center">
                     <h3 className="text-base font-medium">{item.namaUser}</h3>
