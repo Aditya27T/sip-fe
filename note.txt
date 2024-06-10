@@ -1,7 +1,9 @@
-- handle ui login
-- handle dashboard
-- handle page create form laporan
+- handle ui login DONE
+- handle dashboard DONE
+- handle page create form laporan DONE
 - handle title dan logo website DONE
 - handle buat component card laporan data
+- handle pencarian data 
+- handle ui bg in trending
 - handle bug nav ke laporan home dari page lain DONE
 - handle bug dropdown DONE
