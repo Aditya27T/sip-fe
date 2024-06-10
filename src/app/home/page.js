@@ -1,24 +1,26 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 import { initialData } from "@/app/api/laporan/data";
 import Navbar from "@/components/Navbar";
 import Button from "@/components/Button";
 import Search from "@/components/Search";
+import Card from "@/components/Card";
+import useDebounce from "@/hooks/debounce";
 import styles from "@/app/home/home.module.css";
 
-
 export default function Main() {
-  const [dataLaporan, setDataLaporan] = useState(initialData); // kie bisa dihapus bae ketika data wis ana nang API
+  const [dataLaporan, setDataLaporan] = useState(initialData); // ini bisa dihapus nanti ketika data sudah ada dari API
   const [selectedType, setSelectedType] = useState("kehilangan");
   const [filteredDataLaporan, setFilteredDataLaporan] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // nah nang kene kie di fetch data saka API langsung, pengganti const [dataLaporan, setDataLaporan] = useState(initialData);
+        // Fetch data dari API nanti di sini
         // const response = await fetch('Link API');
         // if (!response.ok) {
         //     throw new Error('cannot fetch data from API');
@@ -31,15 +33,27 @@ export default function Main() {
 
         setFilteredDataLaporan(sortFilterLaporandata);
       } catch (error) {
-        console.error('errorr : ', error.message);
+        console.error('error: ', error.message);
       }
     };
 
     fetchData();
-  }, [dataLaporan, selectedType]); // mgko dataLaporan kie diapus ketika get data wis sekang API
+  }, [dataLaporan, selectedType]); // nanti dataLaporan ini dihapus ketika get data sudah dari API
+
+  useEffect(() => {
+    const dataDebouce = dataLaporan
+      .filter(item => item.type === selectedType && item.namaBarang.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
+      .sort((recent, last) => new Date(last.createdAt) - new Date(recent.createdAt));
+
+    setFilteredDataLaporan(dataDebouce);
+  }, [debouncedSearchTerm, selectedType, dataLaporan]);
 
   const handleTypeChange = (type) => {
     setSelectedType(type);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
   };
 
   return (
@@ -49,7 +63,7 @@ export default function Main() {
         <section id="hero" className={`${styles.backgroundRadial} w-full h-screen flex justify-center items-center`}>
           <div className="w-full flex flex-col gap-[20px] md:gap-[60px] justify-center items-center">
             <h1 className="text-center text-2xl sm:text-4xl md:text-6xl mx-[20px] sm:mx-[20px] lg:mx-[200px] xl:mx-[290px] leading-[30px] sm:leading-[40px] md:leading-[80px]">Revolutionize Your Inventory with Smart <span className="text-[#00408A]">SIP Reporting</span></h1>
-            {/* Nang kene gawe handle dit, misal drng login / session / token laka, kudu login disiti */}
+            {/* Di sini handle login, misal belum login / session / token tidak ada, harus login dulu */}
             <Link href="/dashboard">
               <Button className="w-[150px] md:w-[200px] h-[40px] md:h-[60px] font-normal rounded-[32px] bg-[#00408A] text-center text-sm md:text-xl text-white">
                 Report Now
@@ -87,32 +101,14 @@ export default function Main() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                       </svg>
                     </div>
-                    <Search className="peer h-full w-full outline-none text-sm text-gray-700 pr-2" type="text" id="search" placeholder="Search" />
+                    <Search className="peer h-full w-full outline-none text-sm text-gray-700 pr-2" type="text" id="search" placeholder="Search" value={searchTerm} onChange={handleSearchChange} />
                   </div>
                 </div>
               </div>
               {/* Laporan Data */}
               <div className="w-full h-auto flex flex-wrap justify-between items-center gap-[14px]">
                 {filteredDataLaporan.map((item, index) => (
-                  <Link className="w-full md:max-w-[345px] lg:max-w-[415px] h-[400px] md:h-[257px] lg:h-[296px]" key={index} href={`/trending/detail?id=${item.id}`}>
-                    <div className="w-full h-full flex flex-col gap-2 p-3 border-2 rounded-[10px] cursor-pointer bg-white">
-                      <div className="w-full h-auto flex justify-between items-center">
-                        <h3 className="text-base font-medium">{item.namaUser}</h3>
-                        <p className={`w-[63px] text-center text-xs py-[4px] rounded-[8px] text-[#666666] ${item.status === 'Pending' ? 'bg-[#ffe60549]' : 'bg-[#1aff055c]'}`}>{item.status}</p>
-                      </div>
-                      <Image
-                        src={item.thumbnail}
-                        width={382}
-                        height={151}
-                        alt="Thumbnail kehilangan"
-                        responsive="true"
-                        loading="lazy"
-                        className="w-full h-[250px] md:h-[105px] lg:h-[140px] !mt-[8px] object-cover rounded-[5px]"
-                      />
-                      <h2 className="text-sm lg:text-base font-bold">{item.namaBarang}</h2>
-                      <p className={`${styles.laporanCardDescription} text-xs text-[#858585] overflow-hidden`}>{item.deskripsi}</p>
-                    </div>
-                  </Link>
+                  <Card key={index} item={item} />
                 ))}
               </div>
             </div>

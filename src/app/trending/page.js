@@ -1,16 +1,26 @@
 "use client";
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-
+import React, { useState, useEffect } from "react";
 import { initialData } from "@/app/api/laporan/data";
 import Navbar from "@/components/Navbar";
 import Search from "@/components/Search";
-import styles from "@/app/trending/trending.module.css";
-
+import Card from "@/components/Card";
+import useDebounce from "@/hooks/debounce";
 
 export default function Trending() {
-    const sortLaporan = initialData.sort((recent, last) => last.vote - recent.vote);
+    const [searchTerm, setSearchTerm] = useState('');
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    const [filteredData, setFilteredData] = useState([]);
+
+    useEffect(() => {
+        const filtered = initialData
+            .filter(item => item.namaBarang.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
+            .sort((recent, last) => last.vote - recent.vote);
+        setFilteredData(filtered);
+    }, [debouncedSearchTerm]);
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
 
     return (
         <>
@@ -27,31 +37,20 @@ export default function Trending() {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                         </svg>
                                     </div>
-                                    <Search className="peer h-full w-full outline-none text-sm text-gray-700 pr-2" type="text" id="search" placeholder="Search" />
+                                    <Search 
+                                        className="peer h-full w-full outline-none text-sm text-gray-700 pr-2" 
+                                        type="text" 
+                                        id="search" 
+                                        placeholder="Search" 
+                                        value={searchTerm} 
+                                        onChange={handleSearchChange} 
+                                    />
                                 </div>
                             </div>
                             {/* Laporan Data */}
                             <div className="w-full h-auto flex flex-wrap justify-between items-center gap-[14px]">
-                                {sortLaporan.map((item, index) => (
-                                    <Link className="w-full md:max-w-[345px] lg:max-w-[415px] h-[400px] md:h-[257px] lg:h-[296px]" key={index} href={`/trending/detail?id=${item.id}`}>
-                                        <div className="w-full h-full flex flex-col gap-2 p-3 border-2 rounded-[10px] cursor-pointer bg-white">
-                                            <div className="w-full h-auto flex justify-between items-center">
-                                                <h3 className="text-base font-medium">{item.namaUser}</h3>
-                                                <p className={`w-[63px] text-center text-xs py-[4px] rounded-[8px] text-[#666666] ${item.status === 'Pending' ? 'bg-[#ffe60549]' : 'bg-[#1aff055c]'}`}>{item.status}</p>
-                                            </div>
-                                            <Image
-                                                src={item.thumbnail}
-                                                width={382}
-                                                height={151}
-                                                alt="Thumbnail Laporan"
-                                                responsive="true"
-                                                loading="lazy"
-                                                className="w-full h-[250px] md:h-[105px] lg:h-[140px] !mt-[8px] object-cover rounded-[5px]"
-                                            />
-                                            <h2 className="text-sm lg:text-base font-bold">{item.namaBarang}</h2>
-                                            <p className={`${styles.laporanCardDescription} text-xs text-[#858585] overflow-hidden`}>{item.deskripsi}</p>
-                                        </div>
-                                    </Link>
+                                {filteredData.map((item, index) => (
+                                    <Card key={index} item={item} />
                                 ))}
                             </div>
                         </div>
