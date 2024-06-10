@@ -1,8 +1,9 @@
 "use client";
-"use strict";
 import React from 'react';
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { Icon } from '@iconify/react';
 
 import { initialData } from "@/app/api/laporan/data";
@@ -13,6 +14,7 @@ import styles from "@/app/trending/trending.module.css";
 
 
 export default function DetailLaporanPage() {
+    const router = useRouter();
     const laporanId = useSearchParams().get("id");
     const id = laporanId ? parseInt(laporanId) : 0; // kie hapus bae jane rpp dit, gawe ngetes tok
     const item = initialData.find(item => item.id === id);
@@ -25,12 +27,13 @@ export default function DetailLaporanPage() {
 
     if (!item) {
         return (
-            <div className="w-full h-screen flex justify-center items-center">
-                <p className="font-bold font-2xl text-center">Data tidak ditemukan</p>
-                <Button className="mt-5" onClick={() => router.push("/trending")}>Kembali</Button>
+            <div className="w-full h-screen flex flex-col justify-center items-center">
+                <p className="font-bold text-3xl text-center">Data tidak ditemukan</p>
+                <Button className="mt-5 py-2 px-10 rounded-md text-white bg-[#00408A]">
+                    <Link href="/trending">Kembali</Link>
+                </Button>
             </div>
         )
-
     }
 
     return (
@@ -81,19 +84,17 @@ export default function DetailLaporanPage() {
                                     {/* container comments */}
                                     <div className="px-28">
                                         <div class="space-y-12">
-                                            <div class="pb-5">
-                                                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                                    <div class="col-span-full">
-                                                        <div class="mt-2">
-                                                            <textarea id="about" name="about" rows="3" placeholder="Add a commnet..." class="block w-full rounded-md border-0 py-3 px-6 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-[1px] focus:ring-inset focus:ring-[#4777DE] sm:text-sm sm:leading-6"></textarea>
-                                                        </div>
+                                            <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                                <div class="col-span-full">
+                                                    <div class="mt-2">
+                                                        <textarea id="about" name="about" rows="3" placeholder="Add a commnet..." class="block w-full border-0 py-3 px-6 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-[1px] focus:ring-inset focus:ring-[#4777DE] sm:text-sm sm:leading-6"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="mt-6 flex items-center justify-end gap-x-6">
-                                            <button type="submit" class="rounded-md bg-[#00408A] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#4777DE] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+                                        <div class="h-[90px] flex items-end justify-end pb-[10px] pr-[20px] bg-[#2d394c1c]">
+                                            <button type="submit" class="rounded-md bg-[#00408A] px-[25px] py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#4777DE] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Post</button>
                                         </div>
                                     </div>
                                 </form>

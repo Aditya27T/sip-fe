@@ -1,5 +1,7 @@
-- handle ui logim
+- handle ui login
 - handle dashboard
-- handle page create laporan
-- handle bug nav ke laporan home dari page lain 
-- handle bug dropdown
+- handle page create form laporan
+- handle title dan logo website DONE
+- handle buat component card laporan data
+- handle bug nav ke laporan home dari page lain DONE
+- handle bug dropdown DONE

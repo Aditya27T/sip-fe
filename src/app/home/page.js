@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,7 +11,6 @@ import styles from "@/app/home/home.module.css";
 
 
 export default function Main() {
-  const router = useRouter();
   const [dataLaporan, setDataLaporan] = useState(initialData); // kie bisa dihapus bae ketika data wis ana nang API
   const [selectedType, setSelectedType] = useState("kehilangan");
   const [filteredDataLaporan, setFilteredDataLaporan] = useState([]);
@@ -27,11 +25,11 @@ export default function Main() {
         // }
         // const dataLaporan = await response.json();
 
-        const sortedFilteredDataLaporan = dataLaporan
+        const sortFilterLaporandata = dataLaporan
           .filter(item => item.type === selectedType)
           .sort((recent, last) => new Date(last.createdAt) - new Date(recent.createdAt));
 
-        setFilteredDataLaporan(sortedFilteredDataLaporan);
+        setFilteredDataLaporan(sortFilterLaporandata);
       } catch (error) {
         console.error('errorr : ', error.message);
       }
@@ -50,14 +48,13 @@ export default function Main() {
       <main className="w-full h-auto">
         <section id="hero" className={`${styles.backgroundRadial} w-full h-screen flex justify-center items-center`}>
           <div className="w-full flex flex-col gap-[20px] md:gap-[60px] justify-center items-center">
-            <h1 className="text-center text-2xl sm:text-4xl md:text-6xl mx-[20px] sm:mx-[20px] lg:mx-[120px] leading-[30px] sm:leading-[40px] md:leading-[80px]">Revolutionize Your Inventory with Smart <span className="text-[#00408A]">SIP Reporting</span></h1>
-            <a onClick={function () {
-              router.push("/login")
-            }}>
+            <h1 className="text-center text-2xl sm:text-4xl md:text-6xl mx-[20px] sm:mx-[20px] lg:mx-[200px] xl:mx-[290px] leading-[30px] sm:leading-[40px] md:leading-[80px]">Revolutionize Your Inventory with Smart <span className="text-[#00408A]">SIP Reporting</span></h1>
+            {/* Nang kene gawe handle dit, misal drng login / session / token laka, kudu login disiti */}
+            <Link href="/report">
               <Button className="w-[150px] md:w-[200px] h-[40px] md:h-[60px] font-normal rounded-[32px] bg-[#00408A] text-center text-sm md:text-xl text-white">
                 Report Now
               </Button>
-            </a>
+            </Link>
           </div>
         </section>
 
@@ -72,13 +69,13 @@ export default function Main() {
                       className={`text-xs sm:text-base md:text-2xl font-medium cursor-pointer ${selectedType === 'kehilangan' ? 'underline underline-offset-[5px] sm:underline-offset-[10px] text-[#00408A]' : 'text-[#8F8F8F]'}`}
                       onClick={() => handleTypeChange('kehilangan')}
                     >
-                      kehilangan Kehilangan
+                      Kehilangan
                     </li>
                     <li
                       className={`text-xs sm:text-base md:text-2xl font-medium cursor-pointer ${selectedType === 'kerusakan' ? 'underline underline-offset-[5px] sm:underline-offset-[10px] text-[#00408A]' : 'text-[#8F8F8F]'}`}
                       onClick={() => handleTypeChange('kerusakan')}
                     >
-                      kehilangan Kerusakan
+                      Kerusakan
                     </li>
                   </ul>
                 </div>

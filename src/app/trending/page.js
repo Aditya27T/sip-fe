@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,7 +10,6 @@ import styles from "@/app/trending/trending.module.css";
 
 
 export default function Trending() {
-    const router = useRouter();
     const sortLaporan = initialData.sort((recent, last) => last.vote - recent.vote);
 
     return (
