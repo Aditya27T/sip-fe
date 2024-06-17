@@ -14,7 +14,7 @@ export default function Main() {
   const [dataLaporan, setDataLaporan] = useState(initialData); // ini bisa dihapus nanti ketika data sudah ada dari API
   const [selectedType, setSelectedType] = useState("kehilangan");
   const [filteredDataLaporan, setFilteredDataLaporan] = useState([]);
-  const [searchLaporan, setSearchLaporan] = useState('');
+  const [searchLaporan, setSearchLaporan] = useState("");
   const debouncedSearchLaporan = useDebounce(searchLaporan, 500);
 
   useEffect(() => {
@@ -28,12 +28,15 @@ export default function Main() {
         // const dataLaporan = await response.json();
 
         const sortFilterLaporandata = dataLaporan
-          .filter(item => item.type === selectedType)
-          .sort((recent, last) => new Date(last.createdAt) - new Date(recent.createdAt));
+          .filter((item) => item.type === selectedType)
+          .sort(
+            (recent, last) =>
+              new Date(last.createdAt) - new Date(recent.createdAt)
+          );
 
         setFilteredDataLaporan(sortFilterLaporandata);
       } catch (error) {
-        console.error('error: ', error.message);
+        console.error("error: ", error.message);
       }
     };
 
@@ -42,8 +45,16 @@ export default function Main() {
 
   useEffect(() => {
     const dataDebouce = dataLaporan
-      .filter(item => item.type === selectedType && item.namaBarang.toLowerCase().includes(debouncedSearchLaporan.toLowerCase()))
-      .sort((recent, last) => new Date(last.createdAt) - new Date(recent.createdAt));
+      .filter(
+        (item) =>
+          item.type === selectedType &&
+          item.namaBarang
+            .toLowerCase()
+            .includes(debouncedSearchLaporan.toLowerCase())
+      )
+      .sort(
+        (recent, last) => new Date(last.createdAt) - new Date(recent.createdAt)
+      );
 
     setFilteredDataLaporan(dataDebouce);
   }, [debouncedSearchLaporan, selectedType, dataLaporan]);
@@ -60,11 +71,17 @@ export default function Main() {
     <>
       <Navbar />
       <main className="w-full h-auto">
-        <section id="hero" className={`${styles.backgroundRadial} w-full h-screen flex justify-center items-center`}>
+        <section
+          id="hero"
+          className={`${styles.backgroundRadial} w-full h-screen flex justify-center items-center`}
+        >
           <div className="w-full flex flex-col gap-[20px] md:gap-[60px] justify-center items-center">
-            <h1 className="text-center text-2xl sm:text-4xl md:text-6xl mx-[20px] sm:mx-[20px] lg:mx-[200px] xl:mx-[290px] leading-[30px] sm:leading-[40px] md:leading-[80px]">Revolutionize Your Inventory with Smart <span className="text-[#00408A]">SIP Reporting</span></h1>
+            <h1 className="text-center text-2xl sm:text-4xl md:text-6xl mx-[20px] sm:mx-[20px] lg:mx-[200px] xl:mx-[290px] leading-[30px] sm:leading-[40px] md:leading-[80px]">
+              Revolutionize Your Inventory with Smart{" "}
+              <span className="text-[#00408A]">SIP Reporting</span>
+            </h1>
             {/* nang kene handle login, misal drng login / session / token laka, kudu login sek */}
-            <Link href="/dashboard">
+            <Link href="/report-now">
               <Button className="w-[150px] md:w-[200px] h-[40px] md:h-[60px] font-normal rounded-[32px] bg-[#00408A] text-center text-sm md:text-xl text-white">
                 Report Now
               </Button>
@@ -72,7 +89,10 @@ export default function Main() {
           </div>
         </section>
 
-        <section id="laporan" className={`${styles.backgroundRadial} w-full h-auto flex justify-center items-center py-16`}>
+        <section
+          id="laporan"
+          className={`${styles.backgroundRadial} w-full h-auto flex justify-center items-center py-16`}
+        >
           <div className="container mx-auto">
             <div className="w-full h-auto flex flex-col gap-[30px]">
               <div className="w-full h-auto flex flex-col justify-start gap-[30px]">
@@ -80,14 +100,22 @@ export default function Main() {
                 <div className="w-full h-auto flex justify-center lg:justify-start">
                   <ul className="flex items-center gap-5">
                     <li
-                      className={`text-xs sm:text-base md:text-2xl font-medium cursor-pointer ${selectedType === 'kehilangan' ? 'underline underline-offset-[5px] sm:underline-offset-[10px] text-[#00408A]' : 'text-[#8F8F8F]'}`}
-                      onClick={() => handleTypeChange('kehilangan')}
+                      className={`text-xs sm:text-base md:text-2xl font-medium cursor-pointer ${
+                        selectedType === "kehilangan"
+                          ? "underline underline-offset-[5px] sm:underline-offset-[10px] text-[#00408A]"
+                          : "text-[#8F8F8F]"
+                      }`}
+                      onClick={() => handleTypeChange("kehilangan")}
                     >
                       Kehilangan
                     </li>
                     <li
-                      className={`text-xs sm:text-base md:text-2xl font-medium cursor-pointer ${selectedType === 'kerusakan' ? 'underline underline-offset-[5px] sm:underline-offset-[10px] text-[#00408A]' : 'text-[#8F8F8F]'}`}
-                      onClick={() => handleTypeChange('kerusakan')}
+                      className={`text-xs sm:text-base md:text-2xl font-medium cursor-pointer ${
+                        selectedType === "kerusakan"
+                          ? "underline underline-offset-[5px] sm:underline-offset-[10px] text-[#00408A]"
+                          : "text-[#8F8F8F]"
+                      }`}
+                      onClick={() => handleTypeChange("kerusakan")}
                     >
                       Kerusakan
                     </li>
@@ -97,11 +125,29 @@ export default function Main() {
                 <div className="w-full lg:max-w-md rounded-[10px] border-2">
                   <div className="relative flex items-center w-full h-[40px] sm:h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
                     <div className="grid place-items-center h-full w-12 text-gray-300">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
                       </svg>
                     </div>
-                    <Search className="peer h-full w-full outline-none text-sm text-gray-700 pr-2" type="text" id="search" placeholder="Search" value={searchLaporan} onChange={handleSearchChange} />
+                    <Search
+                      className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
+                      type="text"
+                      id="search"
+                      placeholder="Search"
+                      value={searchLaporan}
+                      onChange={handleSearchChange}
+                    />
                   </div>
                 </div>
               </div>
@@ -116,5 +162,5 @@ export default function Main() {
         </section>
       </main>
     </>
-  )
+  );
 }
