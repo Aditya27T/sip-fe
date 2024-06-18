@@ -10,6 +10,22 @@ export default function addLaporan() {
             Data Laporan
           </h2>
         </div>
+        <table class="table-auto">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Nama Barang</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Malcolm Lockyer</td>
+              <td>Pending</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </form>
   );
