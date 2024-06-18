@@ -1,39 +1,66 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
+import { ArrowLeft } from "@phosphor-icons/react";
 
-import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+export default function AddLaporan() {
+  const Map = useMemo(
+    () =>
+      dynamic(() => import("@/components/Map"), {
+        loading: () => <p>A map is loading</p>,
+        ssr: false,
+      }),
+    []
+  );
 
-export default function addLaporan() {
+  const [position, setPosition] = useState([51.505, -0.09]); // Default position
+  const [zoom, setZoom] = useState(13);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setPosition([position.coords.latitude, position.coords.longitude]);
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
+
   return (
     <>
-      <form className=" my-10 mx-20">
-        <div class="space-y-12">
-          <div class="pb-12">
+      <form className="my-10 mx-20">
+        <div className="space-y-12">
+          <div className="pb-12">
             <div className="flex gap-4">
               <Link href="/">
                 <ArrowLeft size={32} />
               </Link>
-              <h2 class="text-[30px] font-semibold leading-7 text-gray-900">
+              <h2 className="text-[30px] font-semibold leading-7 text-gray-900">
                 Buat Data Laporan
               </h2>
             </div>
 
-            <div class="mt-10 flex flex-col justify-between gap-10">
-              <div class="sm:col-span-4">
+            <div className="mt-10 flex flex-col justify-between gap-10">
+              <div className="sm:col-span-4">
                 <label
-                  for="namabarang"
-                  class="block text-sm font-medium leading-6 text-gray-900"
+                  htmlFor="namabarang"
+                  className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Nama Barang
                 </label>
-                <div class="mt-2">
-                  <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset sm:max-w-md">
+                <div className="mt-2">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset sm:max-w-md">
                     <input
                       type="text"
                       name="namabarang"
                       id="namabarang"
-                      autocomplete="namabarang"
+                      autoComplete="namabarang"
                       className="block h-[40px] flex-1 pl-[10px] border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="nama barang"
                     />
@@ -41,57 +68,57 @@ export default function addLaporan() {
                 </div>
               </div>
 
-              <div class="col-span-full">
+              <div className="col-span-full">
                 <label
-                  for="thumbnail-photo"
-                  class="block text-sm font-medium leading-6 text-gray-900"
+                  htmlFor="thumbnail-photo"
+                  className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Gambar Barang
                 </label>
-                <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                  <div class="text-center">
+                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                  <div className="text-center">
                     <svg
-                      class="mx-auto h-12 w-12 text-gray-300"
+                      className="mx-auto h-12 w-12 text-gray-300"
                       viewBox="0 0 24 24"
                       fill="currentColor"
                       aria-hidden="true"
                     >
                       <path
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
-                        clip-rule="evenodd"
+                        clipRule="evenodd"
                       />
                     </svg>
-                    <div class="mt-4 flex text-sm leading-6 text-gray-600">
+                    <div className="mt-4 flex text-sm leading-6 text-gray-600">
                       <label
-                        for="thumbnail-upload"
-                        class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                        htmlFor="thumbnail-upload"
+                        className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                       >
                         <span>Upload a file</span>
                         <input
                           id="thumbnail-upload"
                           name="thumbnail-upload"
                           type="file"
-                          class="sr-only"
+                          className="sr-only"
                         />
                       </label>
-                      <p class="pl-1">or drag and drop</p>
+                      <p className="pl-1">or drag and drop</p>
                     </div>
-                    <p class="text-xs leading-5 text-gray-600">
+                    <p className="text-xs leading-5 text-gray-600">
                       PNG, JPG, GIF up to 10MB
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div class="col-span-full">
+              <div className="col-span-full">
                 <label
-                  for="about"
-                  class="block text-sm font-medium leading-6 text-gray-900"
+                  htmlFor="about"
+                  className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Deskripsi Barang
                 </label>
-                <div class="mt-2">
+                <div className="mt-2">
                   <textarea
                     id="about"
                     name="about"
@@ -102,18 +129,18 @@ export default function addLaporan() {
                 </div>
               </div>
 
-              <div class="sm:col-span-1">
+              <div className="sm:col-span-1">
                 <label
-                  for="type-barang"
-                  class="block text-sm font-medium leading-6 text-gray-900"
+                  htmlFor="type-barang"
+                  className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Tipe Laporan
                 </label>
-                <div class="mt-2">
+                <div className="mt-2">
                   <select
                     id="type-barang"
                     name="type-barang"
-                    autocomplete="type-barang"
+                    autoComplete="type-barang"
                     className="block h-[40px] w-full rounded-md border-0 py-1.5 pl-[10px] pr-[20px] text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                   >
                     <option>Kehilangan</option>
@@ -122,15 +149,8 @@ export default function addLaporan() {
                 </div>
               </div>
 
-              <div className="w-full">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.56400419724!2d107.56075544356331!3d-6.9034423794030495!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6398252477f%3A0x146a1f93d3e815b2!2sBandung%2C%20Kota%20Bandung%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1718055004469!5m2!1sid!2sid"
-                  width="1080"
-                  height="608"
-                  allowfullscreen=""
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
+              <div className="w-full" style={{ height: "400px" }}>
+                <Map position={position} zoom={zoom} />
               </div>
             </div>
           </div>
