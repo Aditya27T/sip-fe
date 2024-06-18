@@ -6,11 +6,13 @@ import Navbar from "@/components/Navbar";
 import Card from "@/components/Card";
 import Search from "@/components/Search";
 import SimplePagination from "@/components/Pagination";
+import useDebounce from "@/hooks/debounce";
 
 export default function page() {
   const [dataLaporan, setDataLaporan] = useState(initialData); // dumy data api
   const [searchLaporan, setSearchLaporan] = useState("");
   const [filteredDataLaporan, setFilteredDataLaporan] = useState([]);
+  const debouncedSearchLaporan = useDebounce(searchLaporan, 500);
   const handleSearchChange = (event) => {
     setSearchLaporan(event.target.value);
   };
@@ -38,6 +40,20 @@ export default function page() {
       console.error("error: ", error.message);
     }
   };
+
+  useEffect(() => {
+    const dataDebouce = dataLaporan
+      .filter((item) =>
+        item.namaBarang
+          .toLowerCase()
+          .includes(debouncedSearchLaporan.toLowerCase())
+      )
+      .sort(
+        (recent, last) => new Date(last.createdAt) - new Date(recent.createdAt)
+      );
+
+    setFilteredDataLaporan(dataDebouce);
+  }, [debouncedSearchLaporan, dataLaporan]);
 
   useEffect(() => {
     fetchData();
