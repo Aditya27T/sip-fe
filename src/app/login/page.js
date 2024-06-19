@@ -25,11 +25,18 @@ const Login = () => {
                                     <input type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
                                 </div>
                             </div>
-                            <Link href="/dashboard">
-                                <Button className="w-full h-10 px-6 font-normal rounded-[6px] bg-[#00408A] text-white" type={'submit'}>
-                                    Log In
-                                </Button>
-                            </Link>
+                            <div className="w-full h-auto flex flex-col gap-5">
+                                <Link href="/dashboard">
+                                    <Button className="w-full h-10 px-6 font-normal rounded-[6px] bg-[#00408A] text-white" type={'submit'}>
+                                        Log In
+                                    </Button>
+                                </Link>
+                                <Link href="/dashboard">
+                                    <Button className="w-full h-10 px-6 font-normal rounded-[6px] bg-[#00408A] text-white" type={'submit'}>
+                                        Log In
+                                    </Button>
+                                </Link>
+                            </div>
                         </form>
                     </div>
                 </div>
